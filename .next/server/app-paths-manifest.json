@@ -1,0 +1,6 @@
+{
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/career-insights/jobss/page": "app/career-insights/jobss/page.js",
+  "/career-insights/resume/page": "app/career-insights/resume/page.js",
+  "/page": "app/page.js"
+}
