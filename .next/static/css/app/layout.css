@@ -955,6 +955,10 @@ video {
 .\!m-0 {
   margin: 0px !important;
 }
+.mx-28 {
+  margin-left: 7rem;
+  margin-right: 7rem;
+}
 .mx-8 {
   margin-left: 2rem;
   margin-right: 2rem;
@@ -970,18 +974,6 @@ video {
 .my-20 {
   margin-top: 5rem;
   margin-bottom: 5rem;
-}
-.mx-10 {
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-}
-.mx-16 {
-  margin-left: 4rem;
-  margin-right: 4rem;
-}
-.mx-28 {
-  margin-left: 7rem;
-  margin-right: 7rem;
 }
 .-mr-4 {
   margin-right: -1rem;
@@ -1167,12 +1159,6 @@ video {
 .w-max {
   width: -moz-max-content;
   width: max-content;
-}
-.w-\[100\] {
-  width: 100;
-}
-.w-\[100\%\] {
-  width: 100%;
 }
 .w-screen {
   width: 100vw;
@@ -1489,6 +1475,9 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
+.bg-black\/\[0\.80\] {
+  background-color: rgb(0 0 0 / 0.80);
+}
 .bg-black\/\[0\.96\] {
   background-color: rgb(0 0 0 / 0.96);
 }
@@ -1553,12 +1542,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-.bg-black\/\[\] {
-  background-color: rgb(0 0 0 / );
-}
-.bg-black\/\[0\.80\] {
-  background-color: rgb(0 0 0 / 0.80);
 }
 .bg-\[radial-gradient\(circle_farthest-side_at_0_100\%\2c \#00ccb1\2c transparent\)\2c radial-gradient\(circle_farthest-side_at_100\%_0\2c \#7b61ff\2c transparent\)\2c radial-gradient\(circle_farthest-side_at_100\%_100\%\2c \#ffc414\2c transparent\)\2c radial-gradient\(circle_farthest-side_at_0_0\2c \#1ca0fb\2c \#141316\)\] {
   background-image: radial-gradient(circle farthest-side at 0 100%,#00ccb1,transparent),radial-gradient(circle farthest-side at 100% 0,#7b61ff,transparent),radial-gradient(circle farthest-side at 100% 100%,#ffc414,transparent),radial-gradient(circle farthest-side at 0 0,#1ca0fb,#141316);

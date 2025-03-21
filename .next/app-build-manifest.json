@@ -16,15 +16,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/job-role/route.js"
     ],
-    "/career-insights/resume/page": [
+    "/career-insights/courses/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/resume/page.js"
+      "static/chunks/app/career-insights/courses/page.js"
+    ],
+    "/api/courses/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/courses/route.js"
     ],
     "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
+    ],
+    "/career-insights/resume/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/career-insights/resume/page.js"
+    ],
+    "/api/analyze-resume/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/analyze-resume/route.js"
     ]
   }
 }
