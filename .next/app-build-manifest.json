@@ -6,21 +6,6 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/career-insights/jobss/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/jobss/page.js"
-    ],
-    "/career-insights/courses/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/courses/page.js"
-    ],
     "/career-insights/resume/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",

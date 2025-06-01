@@ -75,7 +75,7 @@ const CoursesPage = () => {
       <h1 className="text-4xl font-bold text-center mb-6 mt-32 text-white">Find the Best Courses for Your Career</h1>
 
       {/* FILTERS */}
-      <div className="flex flex-col sm:flex-row justify-between w-full max-w-4xl gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between w-full max-w-4xl gap-4 mb-6 z-0">
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}

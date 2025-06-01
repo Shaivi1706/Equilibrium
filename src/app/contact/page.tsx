@@ -26,9 +26,7 @@ function MusicSchoolContactUs() {
           Contact Us
         </h1>
         <p className="text-neutral-500 max-w-lg mx-auto my-2 text-sm text-center">
-          We&apos;re here to help with any questions about our courses,
-          programs, or events. Reach out and let us know how we can assist you
-          in your musical journey.
+          I'll be grateful for your review about my website :-)
         </p>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <input
@@ -36,14 +34,14 @@ function MusicSchoolContactUs() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Your email address"
-            className="rounded-lg border border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full p-4 bg-neutral-950 placeholder:text-neutral-700"
+            className="rounded-lg border border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full p-4 text-white bg-neutral-950 placeholder:text-neutral-700"
             required
           />
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Your message"
-            className="rounded-lg border border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full p-4 bg-neutral-950 placeholder:text-neutral-700"
+            className="rounded-lg border border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full text-white p-4 bg-neutral-950 placeholder:text-neutral-700"
             rows={5}
             required
           ></textarea>

@@ -40,7 +40,7 @@ function Navbar({ className }: { className?: string }) {
 
           {/* finalised first nav */}
             <MenuItem setActive={setActive} active={active} item="Level Up">
-          <div className="text-sm grid grid-cols-2 gap-10 p-4">
+          <div className="text-sm grid grid-cols-2 gap-10 p-4 ">
             <ProductItem
               title="Job Recommendations"
               href="/career-insights/jobss"
