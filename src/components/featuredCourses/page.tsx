@@ -1,16 +1,17 @@
 'use client'
 import Link from "next/link"
-import { BackgroundGradient } from "./ui/background-gradient"
+import { BackgroundGradient } from "../ui/background-gradient"
 
 
 function FeaturedCourses() {
 
 
   return (
+    
     <div className="py-12 min-h-screen bg-gray-900">
         <div>
             <div className="text-center">
-                <h2 className="text-base text-teal-600 font-semibold tracking-wide uppercase">FEATURES OF OUR PLATFORM</h2>
+                <h2 className="text-base text-teal-600 mt-28 font-semibold tracking-wide uppercase">FEATURES OF OUR PLATFORM</h2>
                 <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">Unlock Your True Potential</p>
             </div>
         </div>

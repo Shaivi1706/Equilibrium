@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import { Spotlight } from "./ui/Spotlight"
 import { Button } from "./ui/moving-border";
@@ -19,7 +20,7 @@ function HeroSection() {
             className="mt-4 font-normal text-base md:text-lg text-neutral-300 max-w-lg mx-auto"
             >Discover the best career paths, upskill with the right courses, and optimize your resume—all in one place. Let AI guide you to smarter career decisions and help you land your dream job.</p>
             <div className="mt-4">
-                <Link href={"/"}>
+                <Link href='#featured-courses'>
                     <Button
                     borderRadius="1.75rem"
                     className="bg-white dark:bg-black text-black dark:text-white border-neutral-200 dark:border-slate-800"
@@ -27,6 +28,17 @@ function HeroSection() {
                     Explore features
                     </Button>
                 </Link>
+                {/* <Button
+                    borderRadius="1.75rem"
+                    className="bg-white dark:bg-black text-black dark:text-white border-neutral-200 dark:border-slate-800"
+                    onClick={() => {
+                      document.getElementById('featuredCourses')?.scrollIntoView({ 
+                        behavior: 'smooth' 
+                      });
+                    }}
+                  >
+                    Explore features
+                  </Button> */}
             </div>
         </div>
         
