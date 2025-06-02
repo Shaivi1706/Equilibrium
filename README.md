@@ -16,9 +16,7 @@ We often feel lost between where we are and where we want to be in our careers. 
 ## Features
 
 ### Job Recommendations (Completed)
-- Intelligent job suggestions based on skills, interests, and resume content.
-- Integrates external job APIs to find trending and relevant openings.
-- Filters based on remote/in-office, role type, and industry.
+- Intelligent job suggestions based on skills and interests.
 
 ### Resume Analysis (In Progress)
 - Upload or paste your resume to receive AI-driven analysis.
@@ -26,6 +24,5 @@ We often feel lost between where we are and where we want to be in our careers. 
 - Provides insights into ATS compatibility.
 
 ### Course Recommendations (In Progress)
-- Recommends curated courses (Coursera, edX, Udemy, etc.) based on resume/job gap analysis.
+- Recommends curated courses (Coursera) based on resume/job gap analysis.
 - AI matches your goals with trending skills in tech, AI, product, etc.
-- Future plan: certification planning + progress tracker.
