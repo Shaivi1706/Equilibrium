@@ -1,6 +1,4 @@
 {
   "/api/analyze-resume/route": "app/api/analyze-resume/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/career-insights/resume/page": "app/career-insights/resume/page.js"
+  "/_not-found/page": "app/_not-found/page.js"
 }
