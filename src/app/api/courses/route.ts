@@ -13,21 +13,21 @@ const skillFeatures = [
   "Business Analysis", "Communication skills", "Data Science", "Troubleshooting skills", "Graphics Designing"
 ];
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
   try {
     const { skills } = await req.json();
     const inputValues = skillFeatures.map(skill => skillMapping[skills[skill]] || 0);
-    
-    return new Promise((resolve) => {
+
+    return await new Promise<Response>((resolve) => {
       exec(
         `python3 backend/predict.py ${inputValues.join(" ")}`,
-        (error: any, stdout: any, stderr: any) => {
+        (error, stdout, stderr) => {
           if (error) {
             console.error("Python Error:", stderr);
             resolve(NextResponse.json({ error: stderr }, { status: 500 }));
             return;
           }
-          
+
           try {
             const jsonResponse = JSON.parse(stdout.trim());
             resolve(NextResponse.json(jsonResponse, { status: 200 }));
