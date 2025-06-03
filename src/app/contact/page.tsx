@@ -7,10 +7,29 @@ function MusicSchoolContactUs() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Submitted:', { email, message });
-  };
+const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+
+  try {
+    const res = await fetch('/api/post-contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, message }),
+    });
+
+    if (!res.ok) throw new Error('Network response was not ok');
+
+    const data = await res.json();
+    if (data.status === 'success') {
+      alert('Thank you for your feedback!');
+      setEmail('');
+      setMessage('');
+    }
+  } catch (error) {
+    console.error('Fetch error:', error);
+    alert('Something went wrong while sending your message.');
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12 pt-36 relative">

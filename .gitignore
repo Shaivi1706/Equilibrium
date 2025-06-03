@@ -63,3 +63,4 @@ venv/
 .vscode/
 *.swp
 *.swo
+/src/generated/prisma

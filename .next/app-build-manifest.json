@@ -1,5 +1,10 @@
 {
   "pages": {
+    "/api/post-contact/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/post-contact/route.js"
+    ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -16,20 +21,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/contact/page.js"
     ],
-    "/career-insights/jobss/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/jobss/page.js"
-    ],
-    "/career-insights/courses/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/courses/page.js"
-    ],
-    "/career-insights/resume/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/career-insights/resume/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
