@@ -9,6 +9,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "d3njjcbhbojbot.cloudfront.net", // Coursera image CDN
       "coursera.org",
+      "picsum.photos", // Added for placeholder/random images
     ],
     unoptimized: false, // Keep Next.js image optimizations
   },
