@@ -23,6 +23,6 @@ We often feel lost between where we are and where we want to be in our careers. 
 - Detects weak points, skill gaps, and suggests improvements.
 - Provides insights into ATS compatibility.
 
-### Course Recommendations (In Progress)
-- Recommends curated courses (Coursera) based on resume/job gap analysis.
-- AI matches your goals with trending skills in tech, AI, product, etc.
+### Course Recommendations (Completed)
+- Recommends curated courses (Coursera-Rapid api) for the course you ask.
+- It gives you most rated course and it's review to figure out which course you want to pursue.
