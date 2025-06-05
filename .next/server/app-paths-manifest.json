@@ -1,8 +1,8 @@
 {
-  "/api/job-role/route": "app/api/job-role/route.js",
-  "/api/optimize-resume/route": "app/api/optimize-resume/route.js",
-  "/api/courses/route": "app/api/courses/route.js",
-  "/api/analyze-resume/route": "app/api/analyze-resume/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/career-insights/courses/page": "app/career-insights/courses/page.js",
+  "/career-insights/jobss/page": "app/career-insights/jobss/page.js",
   "/career-insights/resume/page": "app/career-insights/resume/page.js",
-  "/career-insights/courses/page": "app/career-insights/courses/page.js"
+  "/contact/page": "app/contact/page.js"
 }

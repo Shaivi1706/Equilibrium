@@ -1,3 +1,4 @@
+// /app/career-insights/jobss/page.tsx
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/moving-border";

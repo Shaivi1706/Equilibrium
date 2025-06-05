@@ -1,3 +1,5 @@
+// /app/components/ui/placeholders-and-vanish-input.tsx
+
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";

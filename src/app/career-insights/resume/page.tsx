@@ -1,3 +1,4 @@
+// /app/career-insights/resume/page.tsx
 "use client";
 import { useState } from "react";
 import { FileText, Rocket, Upload, AlertCircle, CheckCircle, Star, Zap, Target, TrendingUp, Award, Download, Copy } from "lucide-react";

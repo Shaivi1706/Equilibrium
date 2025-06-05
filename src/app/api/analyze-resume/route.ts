@@ -11,13 +11,17 @@ if (apiKey) {
   genAI = new GoogleGenerativeAI(apiKey);
 }
 
+export async function GET() {
+  return new NextResponse('Page is working');
+}
+
 export async function POST(req: Request) {
   try {
-    console.log("📥 Analyze resume API called");
+    console.log("Analyze resume API called");
 
     // Check API key first
     if (!apiKey || !genAI) {
-      console.error("❌ Missing Gemini API key");
+      console.error("Missing Gemini API key");
       return NextResponse.json(
         { error: "Server configuration error: Missing API key" },
         { status: 500 }
@@ -29,7 +33,7 @@ export async function POST(req: Request) {
     try {
       formData = await req.formData();
     } catch (formError) {
-      console.error("❌ Error parsing form data:", formError);
+      console.error("Error parsing form data:", formError);
       return NextResponse.json(
         { error: "Invalid form data" },
         { status: 400 }
@@ -39,14 +43,14 @@ export async function POST(req: Request) {
     const file = formData.get("resume") as File;
 
     if (!file) {
-      console.error("❌ No file provided");
+      console.error("No file provided");
       return NextResponse.json(
         { error: "No file provided" },
         { status: 400 }
       );
     }
 
-    console.log("📄 File received:", file.name, file.type, file.size);
+    console.log("File received:", file.name, file.type, file.size);
 
     // Validate file type
     const allowedTypes = [
@@ -67,18 +71,18 @@ export async function POST(req: Request) {
     let fileContent = "";
     try {
       const buffer = Buffer.from(await file.arrayBuffer());
-      console.log("📦 Buffer created, size:", buffer.length);
+      console.log("Buffer created, size:", buffer.length);
 
       if (file.type === "application/pdf") {
-        console.log("🔍 Processing PDF file...");
+        console.log("Processing PDF file...");
         try {
           // Dynamic import to handle both CommonJS and ES modules
           const pdfParse = await import('pdf-parse');
           const pdfData = await (pdfParse.default || pdfParse)(buffer);
           fileContent = pdfData.text;
-          console.log("✅ PDF parsed successfully, text length:", fileContent.length);
+          console.log("PDF parsed successfully, text length:", fileContent.length);
         } catch (pdfError) {
-          console.error("❌ PDF parsing failed:", pdfError);
+          console.error("PDF parsing failed:", pdfError);
           // More detailed error for PDF parsing failure
           return NextResponse.json(
             { 
@@ -91,18 +95,18 @@ export async function POST(req: Request) {
       } else if (
         file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ) {
-        console.log("🔍 Processing DOCX file...");
+        console.log("Processing DOCX file...");
         try {
           const mammoth = await import('mammoth');
           const docxData = await mammoth.extractRawText({ buffer });
           fileContent = docxData.value;
           console.log("✅ DOCX parsed successfully, text length:", fileContent.length);
         } catch (docxError) {
-          console.error("❌ DOCX parsing failed:", docxError);
+          console.error("DOCX parsing failed:", docxError);
           // Try fallback for DOCX
           try {
             fileContent = buffer.toString("utf-8");
-            console.log("⚠️ Used fallback DOCX parsing");
+            console.log("Used fallback DOCX parsing");
           } catch (fallbackError) {
             return NextResponse.json(
               { 
@@ -114,19 +118,19 @@ export async function POST(req: Request) {
           }
         }
       } else if (file.type === "application/msword") {
-        console.log("🔍 Processing DOC file...");
+        console.log("Processing DOC file...");
         fileContent = buffer.toString("utf-8");
       } else {
-        console.log("🔍 Processing text file...");
+        console.log("Processing text file...");
         fileContent = buffer.toString("utf-8");
       }
 
       // Debug: Show extracted content preview
-      console.log("📝 Extracted content preview:", fileContent.substring(0, 200));
-      console.log("📏 Total extracted content length:", fileContent.length);
+      console.log("Extracted content preview:", fileContent.substring(0, 200));
+      console.log("Total extracted content length:", fileContent.length);
 
       if (!fileContent || fileContent.trim().length < 50) {
-        console.warn("⚠️ File content appears to be insufficient, length:", fileContent.length);
+        console.warn("File content appears to be insufficient, length:", fileContent.length);
         return NextResponse.json(
           {
             error: "Could not extract meaningful text from the file. The file might be:",
@@ -141,7 +145,7 @@ export async function POST(req: Request) {
         );
       }
     } catch (fileError) {
-      console.error("❌ Error reading file:", fileError);
+      console.error("Error reading file:", fileError);
       return NextResponse.json(
         {
           error: "Error reading file content. Please try a different file format.",
@@ -151,7 +155,7 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("✅ File content extracted successfully, proceeding with AI analysis");
+    console.log("File content extracted successfully, proceeding with AI analysis");
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -188,12 +192,12 @@ Be specific and reference actual content from the resume. Return ONLY the JSON o
 `;
 
     try {
-      console.log("🤖 Sending to AI for analysis...");
+      console.log("Sending to AI for analysis...");
       const response = await model.generateContent(prompt);
       const aiResponse = await response.response.text();
       
-      console.log("🤖 AI Response received, length:", aiResponse.length);
-      console.log("🤖 AI Response preview:", aiResponse.substring(0, 200));
+      console.log("AI Response received, length:", aiResponse.length);
+      console.log("AI Response preview:", aiResponse.substring(0, 200));
 
       let cleanedResponse = aiResponse.trim();
       if (cleanedResponse.startsWith("```json")) {
@@ -205,10 +209,10 @@ Be specific and reference actual content from the resume. Return ONLY the JSON o
       let analysis: any;
       try {
         analysis = JSON.parse(cleanedResponse);
-        console.log("✅ AI analysis parsed successfully");
+        console.log("AI analysis parsed successfully");
       } catch (parseError) {
-        console.error("❌ JSON parse error:", parseError);
-        console.error("❌ Failed to parse AI response:", cleanedResponse.substring(0, 500));
+        console.error("JSON parse error:", parseError);
+        console.error("Failed to parse AI response:", cleanedResponse.substring(0, 500));
         
         // Only use fallback if AI completely fails
         analysis = {
@@ -235,7 +239,7 @@ Be specific and reference actual content from the resume. Return ONLY the JSON o
 
       // Validate analysis structure
       if (!analysis.score || !analysis.suggestions || !Array.isArray(analysis.suggestions)) {
-        console.warn("⚠️ Incomplete analysis structure, filling gaps");
+        console.warn("Incomplete analysis structure, filling gaps");
         analysis = {
           ...analysis,
           score: analysis.score || 70,
@@ -261,7 +265,7 @@ Be specific and reference actual content from the resume. Return ONLY the JSON o
       });
 
     } catch (aiError) {
-      console.error("❌ AI analysis error:", aiError);
+      console.error("AI analysis error:", aiError);
 
       // Return analysis based on extracted content instead of generic fallback
       const hasContent = fileContent.length > 100;
@@ -301,7 +305,7 @@ Be specific and reference actual content from the resume. Return ONLY the JSON o
       });
     }
   } catch (error) {
-    console.error("❌ Unexpected server error:", error);
+    console.error("Unexpected server error:", error);
     return NextResponse.json(
       {
         error: "Internal Server Error",

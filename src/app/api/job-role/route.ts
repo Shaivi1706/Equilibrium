@@ -1,3 +1,4 @@
+// /app/api/job-role/route.ts
 import { NextResponse } from "next/server";
 import { exec } from "child_process";
 
@@ -12,6 +13,10 @@ const skillFeatures = [
     "Computer Forensics Fundamentals", "Technical Communication", "AI ML", "Software Engineering",
     "Business Analysis", "Communication skills", "Data Science", "Troubleshooting skills", "Graphics Designing"
 ];
+
+export async function GET() {
+  return new NextResponse('Page is working');
+}
 
 export async function POST(req: Request) {
     

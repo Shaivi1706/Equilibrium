@@ -1,3 +1,4 @@
+// /app/career-insights/courses/page.tsx
 "use client";
 import { useState, useEffect } from "react";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";

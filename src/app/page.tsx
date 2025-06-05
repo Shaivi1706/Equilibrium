@@ -1,3 +1,4 @@
+// /app/page.tsx
 import FeaturedCourses from "@/components/featuredCourses/page";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";

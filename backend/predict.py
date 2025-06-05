@@ -14,6 +14,6 @@ def predict_role(input_values):
     return predicted_role
 
 if __name__ == "__main__":
-    input_values = list(map(float, sys.argv[1:]))  # Convert to float
+    input_values = list(map(float, sys.argv[1:]))  # Converting to float
     predicted_role = predict_role(input_values)
     print(json.dumps({"predicted_role": predicted_role}))
