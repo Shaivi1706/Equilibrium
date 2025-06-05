@@ -28,17 +28,6 @@ function HeroSection() {
                     Explore features
                     </Button>
                 </Link>
-                {/* <Button
-                    borderRadius="1.75rem"
-                    className="bg-white dark:bg-black text-black dark:text-white border-neutral-200 dark:border-slate-800"
-                    onClick={() => {
-                      document.getElementById('featuredCourses')?.scrollIntoView({ 
-                        behavior: 'smooth' 
-                      });
-                    }}
-                  >
-                    Explore features
-                  </Button> */}
             </div>
         </div>
         

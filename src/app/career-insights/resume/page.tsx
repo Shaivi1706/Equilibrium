@@ -218,7 +218,7 @@ export default function ResumeEnhancement() {
       }
       
     } catch (error) {
-      console.error("❌ Error:", error);
+      console.error("Error:", error);
       setErrorMessage(error instanceof Error ? error.message : "Error analyzing resume. Please try again.");
     } finally {
       setLoading(false);
@@ -249,7 +249,7 @@ export default function ResumeEnhancement() {
       }
 
       const data = await response.json();
-      console.log("✅ Optimization complete:", data);
+      console.log("Optimization complete:", data);
 
       if (data.optimized) {
         setOptimizedResume(data.optimized);
@@ -258,7 +258,7 @@ export default function ResumeEnhancement() {
       }
       
     } catch (error) {
-      console.error("❌ Error:", error);
+      console.error("Error:", error);
       setErrorMessage(error instanceof Error ? error.message : "Error optimizing resume. Please try again.");
     } finally {
       setOptimizing(false);
@@ -369,7 +369,7 @@ export default function ResumeEnhancement() {
           <div className="text-center">
             <div className="inline-flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm border border-green-500/30 rounded-full text-green-300">
               <CheckCircle className="w-5 h-5" />
-              <span className="font-medium">📄 {uploadedFile.name} uploaded successfully</span>
+              <span className="font-medium">{uploadedFile.name} uploaded successfully</span>
             </div>
           </div>
         )}
@@ -381,7 +381,7 @@ export default function ResumeEnhancement() {
               <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-400 rounded-full mx-auto mb-6 animate-spin" />
               <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-purple-400 rounded-full mx-auto animate-spin animate-reverse" style={{ animationDelay: '0.5s' }} />
             </div>
-            <p className="text-xl text-gray-300 font-medium">🔍 AI is analyzing your resume...</p>
+            <p className="text-xl text-gray-300 font-medium">AI is analyzing your resume...</p>
             <p className="text-sm text-gray-400 mt-2">This may take a few moments</p>
           </div>
         )}
@@ -392,7 +392,7 @@ export default function ResumeEnhancement() {
               <div className="w-16 h-16 border-4 border-green-500/30 border-t-green-400 rounded-full mx-auto mb-6 animate-spin" />
               <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-emerald-400 rounded-full mx-auto animate-spin animate-reverse" style={{ animationDelay: '0.5s' }} />
             </div>
-            <p className="text-xl text-gray-300 font-medium">🚀 Optimizing your resume...</p>
+            <p className="text-xl text-gray-300 font-medium">Optimizing your resume...</p>
             <p className="text-sm text-gray-400 mt-2">Creating the perfect version</p>
           </div>
         )}
