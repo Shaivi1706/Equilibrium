@@ -1,4 +1,8 @@
 {
+  "/api/courses/route": "app/api/courses/route.js",
   "/page": "app/page.js",
-  "/career-insights/resume/page": "app/career-insights/resume/page.js"
+  "/career-insights/jobss/page": "app/career-insights/jobss/page.js",
+  "/career-insights/courses/page": "app/career-insights/courses/page.js",
+  "/career-insights/resume/page": "app/career-insights/resume/page.js",
+  "/contact/page": "app/contact/page.js"
 }
