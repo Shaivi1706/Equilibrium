@@ -1,6 +1,4 @@
 {
-  "/api/courses/route": "app/api/courses/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/career-insights/courses/page": "app/career-insights/courses/page.js",
+  "/page": "app/page.js",
   "/career-insights/resume/page": "app/career-insights/resume/page.js"
 }

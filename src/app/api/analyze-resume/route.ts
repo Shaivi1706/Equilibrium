@@ -1,100 +1,3 @@
-// // In /app/api/analyze-resume/route.ts or .js
-// import { NextResponse } from "next/server";
-// import { GoogleGenerativeAI } from "@google/generative-ai";
-// import pdf from 'pdf-parse'; // npm install pdf-parse
-// import mammoth from 'mammoth'; // npm install mammoth
-
-// const apiKey = process.env.GEMINI_API_KEY as string;
-// const genAI = new GoogleGenerativeAI(apiKey);
-
-// export async function POST(req: Request) {
-//   try {
-//     console.log("📥 API route called");
-    
-//     // Check API key
-//     if (!apiKey) {
-//       console.error("❌ Missing Gemini API key");
-//       return NextResponse.json({ error: "Server configuration error: Missing API key" }, { status: 500 });
-//     }
-    
-//     const formData = await req.formData();
-//     const file = formData.get("resume") as File;
-    
-//     if (!file) {
-//       console.error("❌ No file provided");
-//       return NextResponse.json({ error: "No file provided" }, { status: 400 });
-//     }
-    
-//     console.log("📄 File received:", file.name, file.type, file.size);
-    
-//     // Get file content as text
-//     let fileContent = "";
-    
-//     try {
-//       // For simplicity, just convert to text directly
-//       const buffer = Buffer.from(await file.arrayBuffer());
-//       fileContent = buffer.toString('utf-8');
-      
-//       // If it's not readable text, let's inform the user
-//       if (!fileContent || fileContent.length < 10) {
-//         console.warn("⚠️ File content appears to be binary or empty");
-//         fileContent = "This appears to be a binary file that couldn't be read as text.";
-//       }
-//     } catch (fileError) {
-//       console.error("❌ Error reading file:", fileError);
-//       return NextResponse.json({ 
-//         error: "Error reading file content", 
-//         details: String(fileError)
-//       }, { status: 400 });
-//     }
-    
-//     // Simple metadata extraction
-//     const metadata = {
-//       name: file.name,
-//       type: file.type,
-//       size: file.size,
-//       lastModified: new Date(file.lastModified).toISOString()
-//     };
-    
-//     console.log("✅ File content extracted, length:", fileContent.length);
-    
-//     // Use Gemini to analyze the content
-//     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-    
-//     const prompt = `
-//       You are an ATS (Applicant Tracking System) evaluator. Analyze the following resume text and:
-//       1. Provide an ATS compatibility score out of 100.
-//       2. Suggest 3-5 improvements to make it more ATS-friendly.
-      
-//       Resume Text:
-//       ${fileContent}
-//     `;
-    
-//     try {
-//       const response = await model.generateContent(prompt);
-//       const aiAnalysis = await response.response.text();
-      
-//       return NextResponse.json({ 
-//         aiAnalysis,
-//         metadata,
-//         textContent: fileContent
-//       });
-//     } catch (aiError) {
-//       console.error("❌ AI analysis error:", aiError);
-//       return NextResponse.json({ 
-//         error: "Error during AI analysis", 
-//         details: String(aiError)
-//       }, { status: 500 });
-//     }
-//   } catch (error) {
-//     console.error("❌ Unexpected server error:", error);
-//     return NextResponse.json({ 
-//       error: "Internal Server Error", 
-//       details: String(error)
-//     }, { status: 500 });
-//   }
-// }
-
 // /app/api/analyze-resume/route.ts
 import { NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
@@ -164,42 +67,75 @@ export async function POST(req: Request) {
     let fileContent = "";
     try {
       const buffer = Buffer.from(await file.arrayBuffer());
+      console.log("📦 Buffer created, size:", buffer.length);
 
       if (file.type === "application/pdf") {
-        // Try to use pdf-parse if available, otherwise fallback
+        console.log("🔍 Processing PDF file...");
         try {
-          const pdf = await import('pdf-parse');
-          const pdfData = await pdf.default(buffer);
+          // Dynamic import to handle both CommonJS and ES modules
+          const pdfParse = await import('pdf-parse');
+          const pdfData = await (pdfParse.default || pdfParse)(buffer);
           fileContent = pdfData.text;
+          console.log("✅ PDF parsed successfully, text length:", fileContent.length);
         } catch (pdfError) {
-          console.warn("⚠️ pdf-parse not available, using fallback");
-          // Fallback: convert buffer to text (won't work well for PDF but prevents crash)
-          fileContent = "PDF parsing not available. Please upload a DOC or TXT file.";
+          console.error("❌ PDF parsing failed:", pdfError);
+          // More detailed error for PDF parsing failure
+          return NextResponse.json(
+            { 
+              error: "Could not extract text from PDF. Please ensure it's a text-based PDF (not a scanned image) or try uploading a DOC/DOCX file instead.",
+              details: "PDF parsing library error"
+            },
+            { status: 400 }
+          );
         }
       } else if (
         file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ) {
-        // Try to use mammoth if available, otherwise fallback
+        console.log("🔍 Processing DOCX file...");
         try {
           const mammoth = await import('mammoth');
           const docxData = await mammoth.extractRawText({ buffer });
           fileContent = docxData.value;
+          console.log("✅ DOCX parsed successfully, text length:", fileContent.length);
         } catch (docxError) {
-          console.warn("⚠️ mammoth not available, using fallback");
-          fileContent = buffer.toString("utf-8");
+          console.error("❌ DOCX parsing failed:", docxError);
+          // Try fallback for DOCX
+          try {
+            fileContent = buffer.toString("utf-8");
+            console.log("⚠️ Used fallback DOCX parsing");
+          } catch (fallbackError) {
+            return NextResponse.json(
+              { 
+                error: "Could not extract text from DOCX file. Please try uploading a plain text or PDF file.",
+                details: "DOCX parsing failed"
+              },
+              { status: 400 }
+            );
+          }
         }
       } else if (file.type === "application/msword") {
+        console.log("🔍 Processing DOC file...");
         fileContent = buffer.toString("utf-8");
       } else {
-        // Plain text
+        console.log("🔍 Processing text file...");
         fileContent = buffer.toString("utf-8");
       }
 
+      // Debug: Show extracted content preview
+      console.log("📝 Extracted content preview:", fileContent.substring(0, 200));
+      console.log("📏 Total extracted content length:", fileContent.length);
+
       if (!fileContent || fileContent.trim().length < 50) {
-        console.warn("⚠️ File content appears to be insufficient");
+        console.warn("⚠️ File content appears to be insufficient, length:", fileContent.length);
         return NextResponse.json(
           {
-            error: "Could not extract meaningful text from the file. Please ensure it's a valid resume document with readable content.",
+            error: "Could not extract meaningful text from the file. The file might be:",
+            suggestions: [
+              "A scanned PDF (image-based) - try a text-based PDF",
+              "An encrypted or protected document",
+              "Corrupted or in an unsupported format",
+              "Try uploading a plain text (.txt) or Word (.docx) version"
+            ]
           },
           { status: 400 }
         );
@@ -215,40 +151,49 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("✅ File content extracted, length:", fileContent.length);
+    console.log("✅ File content extracted successfully, proceeding with AI analysis");
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
 You are an expert ATS (Applicant Tracking System) evaluator and resume optimization specialist. 
 
-Analyze the following resume text and provide a structured JSON response with the following format:
+Analyze the following resume text carefully and provide a detailed, specific analysis based on the actual content provided.
 
+IMPORTANT: Base your analysis entirely on the resume content below. Do not use generic responses.
+
+Resume Content to Analyze:
+${fileContent}
+
+Provide a JSON response with this exact structure:
 {
-  "score": <number between 0-100>,
-  "strengths": [<array of 3-5 specific strengths found in the resume>],
-  "suggestions": [<array of 5-7 specific, actionable improvement suggestions>],
-  "weaknesses": [<array of 3-5 specific weaknesses or missing elements>],
-  "keywords": [<array of important keywords found>],
-  "missingKeywords": [<array of common keywords that should be added>]
+  "score": <number between 0-100 based on actual content>,
+  "strengths": [<array of 3-5 specific strengths found in THIS resume>],
+  "suggestions": [<array of 5-7 specific, actionable improvements based on what you see>],
+  "weaknesses": [<array of 3-5 specific weaknesses in THIS resume>],
+  "keywords": [<array of important keywords actually found in the resume>],
+  "missingKeywords": [<array of relevant keywords that should be added based on the role/industry>]
 }
 
-Focus on:
+Focus your analysis on:
 1. ATS compatibility (formatting, keywords, structure)
-2. Content quality and relevance
+2. Content quality and relevance  
 3. Professional presentation
 4. Skills and experience highlighting
 5. Action verbs and quantifiable achievements
+6. Industry-specific keywords present/missing
+7. Overall resume effectiveness
 
-Resume Text:
-${fileContent.substring(0, 8000)} ${fileContent.length > 8000 ? '...[truncated]' : ''}
-
-Return ONLY the JSON object, no additional text.
+Be specific and reference actual content from the resume. Return ONLY the JSON object.
 `;
 
     try {
+      console.log("🤖 Sending to AI for analysis...");
       const response = await model.generateContent(prompt);
       const aiResponse = await response.response.text();
+      
+      console.log("🤖 AI Response received, length:", aiResponse.length);
+      console.log("🤖 AI Response preview:", aiResponse.substring(0, 200));
 
       let cleanedResponse = aiResponse.trim();
       if (cleanedResponse.startsWith("```json")) {
@@ -260,37 +205,40 @@ Return ONLY the JSON object, no additional text.
       let analysis: any;
       try {
         analysis = JSON.parse(cleanedResponse);
+        console.log("✅ AI analysis parsed successfully");
       } catch (parseError) {
         console.error("❌ JSON parse error:", parseError);
-        // Return fallback response
+        console.error("❌ Failed to parse AI response:", cleanedResponse.substring(0, 500));
+        
+        // Only use fallback if AI completely fails
         analysis = {
-          score: 75,
+          score: 70,
           suggestions: [
+            "Resume processed but detailed analysis unavailable",
             "Add more specific keywords related to your industry",
             "Include quantifiable achievements in your experience",
-            "Use stronger action verbs to describe your accomplishments",
-            "Consider adding a professional summary section",
-            "Ensure your contact information is clearly visible"
+            "Use stronger action verbs to describe accomplishments",
+            "Consider adding a professional summary section"
           ],
           strengths: [
             "Resume successfully uploaded and processed",
-            "Content appears to be well-structured",
-            "Appropriate length for review"
+            "Content extracted for analysis"
           ],
           weaknesses: [
-            "May need more industry-specific keywords",
-            "Could benefit from more quantified results"
+            "Detailed analysis temporarily unavailable"
           ],
           keywords: [],
-          missingKeywords: []
+          missingKeywords: [],
+          note: "AI analysis failed, showing basic feedback"
         };
       }
 
       // Validate analysis structure
       if (!analysis.score || !analysis.suggestions || !Array.isArray(analysis.suggestions)) {
+        console.warn("⚠️ Incomplete analysis structure, filling gaps");
         analysis = {
           ...analysis,
-          score: analysis.score || 75,
+          score: analysis.score || 70,
           suggestions: Array.isArray(analysis.suggestions) ? analysis.suggestions : [
             "Add more specific keywords",
             "Include quantifiable achievements",
@@ -305,40 +253,51 @@ Return ONLY the JSON object, no additional text.
         success: true,
         analysis,
         textLength: fileContent.length,
+        debug: {
+          fileSize: file.size,
+          fileName: file.name,
+          contentPreview: fileContent.substring(0, 100)
+        }
       });
 
     } catch (aiError) {
       console.error("❌ AI analysis error:", aiError);
 
-      // Return fallback analysis
+      // Return analysis based on extracted content instead of generic fallback
+      const hasContent = fileContent.length > 100;
+      const contentWords = fileContent.toLowerCase().split(/\s+/);
+      const commonSkills = ['javascript', 'python', 'java', 'react', 'node', 'sql', 'aws', 'docker'];
+      const foundSkills = commonSkills.filter(skill => contentWords.includes(skill));
+
       return NextResponse.json({
         success: true,
         analysis: {
-          score: 70,
+          score: hasContent ? 75 : 60,
           suggestions: [
-            "Add relevant keywords for your target position",
-            "Include specific achievements with numbers/percentages",
-            "Use strong action verbs (achieved, managed, developed, etc.)",
+            "Add more quantifiable achievements with specific numbers",
+            "Include relevant technical keywords for your industry",
+            "Use stronger action verbs (achieved, managed, developed, etc.)",
             "Ensure consistent formatting throughout",
             "Add a compelling professional summary",
-            "Tailor content to the job description",
-            "Include relevant technical skills"
+            "Tailor content to specific job descriptions",
+            "Include relevant certifications or training"
           ],
           strengths: [
-            "Resume uploaded successfully",
-            "Content extracted and ready for optimization",
-            "Appropriate document format"
+            hasContent ? "Resume content successfully extracted" : "File uploaded successfully",
+            foundSkills.length > 0 ? `Technical skills identified: ${foundSkills.join(', ')}` : "Standard resume structure",
+            "Ready for optimization process"
           ],
           weaknesses: [
+            !hasContent ? "Limited content extracted from file" : "Could benefit from more quantified achievements",
             "May need more industry-specific keywords",
-            "Could benefit from quantified achievements",
-            "Formatting optimization needed"
+            "Formatting could be optimized for ATS systems"
           ],
-          keywords: [],
+          keywords: foundSkills,
           missingKeywords: [],
         },
         fallback: true,
-        message: "Analysis completed with fallback data"
+        message: "Analysis completed with content-based fallback",
+        textLength: fileContent.length
       });
     }
   } catch (error) {
