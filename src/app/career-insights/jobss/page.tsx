@@ -43,36 +43,78 @@ export default function SkillQuiz() {
     setRatings((prev) => ({ ...prev, [skill]: level }));
   };
 
-  const handleSubmit = async () => {
-    if (Object.keys(ratings).length !== skills.length) {
-      alert("Please rate all skills before submitting.");
-      return;
-    }
+  // const handleSubmit = async () => {
+  //   if (Object.keys(ratings).length !== skills.length) {
+  //     alert("Please rate all skills before submitting.");
+  //     return;
+  //   }
     
-    setLoading(true);
-    try {
-      const response = await fetch("/api/job-role", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ skills: ratings }),
-      });
+  //   setLoading(true);
+  //   try {
+  //     const response = await fetch("/api/job-role", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ skills: ratings }),
+  //     });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
       
-      const data = await response.json();
-      setPredictedRole(data.predicted_role);
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to get a prediction. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  //     const data = await response.json();
+  //     setPredictedRole(data.predicted_role);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert("Failed to get a prediction. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
     
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  //   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // };
 
+  const handleSubmit = async () => {
+  if (Object.keys(ratings).length !== skills.length) {
+    alert("Please rate all skills before submitting.");
+    return;
+  }
+  
+  setLoading(true);
+  try {
+    console.log("Submitting ratings:", ratings); // Debug log
+    
+    const response = await fetch("/api/job-role", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ skills: ratings }),
+    });
+    
+    console.log("Response status:", response.status); // Debug log
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("Frontend received data:", data); // Debug log
+    
+    if (data.predicted_role) {
+      setPredictedRole(data.predicted_role);
+      console.log("Set predicted role to:", data.predicted_role); // Debug log
+    } else {
+      console.error("No predicted_role in response:", data);
+      alert("Received invalid response from server.");
+    }
+    
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to get a prediction. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
   const completedSkills = Object.keys(ratings).length;
   const progressPercentage = (completedSkills / skills.length) * 100;
 
