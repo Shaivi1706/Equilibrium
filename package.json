@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "run:script": "ts-node scripts/test.ts"
+    "run:script": "ts-node scripts/test.ts",
+    "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
