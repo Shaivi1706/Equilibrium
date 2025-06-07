@@ -1,4 +1,5 @@
 # Equilibrium — Your Personalized Career Growth Companion
+Live Demo : (https://equilibrium-64uw.vercel.app)
 
 Equilibrium is an intelligent career assistant designed to help individuals find balance in their professional journey by providing **AI-powered job recommendations**, **resume feedback**, and **smart course suggestions**, all in one clean, centralized platform.
 
