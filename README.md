@@ -34,6 +34,6 @@ We often feel lost between where we are and where we want to be in our careers. 
 ## Tech Stack
 - Next.js
 - PostgreSQL
-- ML model for job recommendation
+- ML model for job recommendation (yet not hosted on render)
 - Coursera Rapid API for course recommedation
 - Gemini API for resume feedback
