@@ -15,10 +15,13 @@ const skillFeatures = [
 ];
 
 export async function GET() {
-  return new NextResponse('Page is working');
+  return new Response("Page is working", {
+    status: 200,
+    headers: { "Content-Type": "text/plain" }
+  });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
     
     try {
         const { skills } = await req.json();
@@ -30,22 +33,34 @@ export async function POST(req: Request) {
                 (error: any, stdout: any, stderr: any) => {
                     if (error) {
                         console.error("Python Error:", stderr);
-                        resolve(NextResponse.json({ error: stderr }, { status: 500 }));
+                        resolve(new Response(JSON.stringify({ error: stderr }), {
+                        status: 500,
+                        headers: { "Content-Type": "application/json" }
+                        }));
                         return;
                     }
         
                     try {
-                        const jsonResponse = JSON.parse(stdout.trim()); // Ensure valid JSON
-                        resolve(NextResponse.json(jsonResponse, { status: 200 }));
-                    } catch (parseError) {
-                        console.error("Invalid JSON Response:", stdout);
-                        resolve(NextResponse.json({ error: "Invalid JSON from backend" }, { status: 500 }));
-                    }
-                }
-            );
-        });
-        
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+            const jsonResponse = JSON.parse(stdout.trim());
+            resolve(new Response(JSON.stringify(jsonResponse), {
+              status: 200,
+              headers: { "Content-Type": "application/json" }
+            }));
+          } catch (parseError) {
+            console.error("Invalid JSON Response:", stdout);
+            resolve(new Response(JSON.stringify({ error: "Invalid JSON from backend" }), {
+              status: 500,
+              headers: { "Content-Type": "application/json" }
+            }));
+          }
+        }
+      );
+    });
+
+  } catch (error: any) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 }

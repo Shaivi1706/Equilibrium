@@ -1,5 +1,5 @@
 // /app/api/optimize-resume/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Use server-only environment variable
@@ -11,17 +11,17 @@ if (apiKey) {
   genAI = new GoogleGenerativeAI(apiKey);
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   return new NextResponse('Page is working');
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     console.log("Optimize resume API called");
-
+    
     if (!apiKey || !genAI) {
-      return NextResponse.json({ 
-        error: "Server configuration error: Missing API key" 
+      return NextResponse.json({
+        error: "Server configuration error: Missing API key"
       }, { status: 500 });
     }
 
@@ -40,8 +40,8 @@ export async function POST(req: Request) {
     const analysisDataStr = formData.get("analysisData") as string;
 
     if (!file || !analysisDataStr) {
-      return NextResponse.json({ 
-        error: "Missing file or analysis data" 
+      return NextResponse.json({
+        error: "Missing file or analysis data"
       }, { status: 400 });
     }
 
@@ -49,8 +49,8 @@ export async function POST(req: Request) {
     try {
       analysisData = JSON.parse(analysisDataStr);
     } catch (parseError) {
-      return NextResponse.json({ 
-        error: "Invalid analysis data format" 
+      return NextResponse.json({
+        error: "Invalid analysis data format"
       }, { status: 400 });
     }
 
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     try {
       const buffer = Buffer.from(await file.arrayBuffer());
       console.log("Processing file for optimization, size:", buffer.length);
-      
+
       if (file.type === 'application/pdf') {
         try {
           const pdfParse = await import('pdf-parse');
@@ -90,14 +90,13 @@ export async function POST(req: Request) {
         console.warn("Using minimal content for optimization");
         fileContent = "Resume content for optimization based on analysis data";
       }
-
     } catch (fileError) {
       console.error("Error reading file for optimization:", fileError);
       fileContent = "Resume content based on analysis data";
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    
+
     const optimizationPrompt = `
 You are a professional resume writer and career coach. Create an optimized version of the following resume based on the analysis provided.
 
@@ -191,7 +190,7 @@ Return ONLY the JSON object with the optimized resume.
           newScore: optimized.newScore || Math.min(analysisData.score + 15, 90)
         };
       }
-      
+
       return NextResponse.json({
         success: true,
         optimized: optimized,
@@ -200,7 +199,7 @@ Return ONLY the JSON object with the optimized resume.
           optimizedLength: optimized.content.length
         }
       });
-      
+
     } catch (aiError) {
       console.error("AI optimization error:", aiError);
       
@@ -211,7 +210,7 @@ Return ONLY the JSON object with the optimized resume.
           content: generateContentAwareResume(fileContent, analysisData),
           improvements: [
             "Applied general resume best practices to existing content",
-            "Enhanced formatting for ATS compatibility", 
+            "Enhanced formatting for ATS compatibility",
             "Added relevant keywords based on analysis",
             "Improved professional presentation",
             "Strengthened action verbs in experience descriptions"
@@ -221,7 +220,6 @@ Return ONLY the JSON object with the optimized resume.
         fallback: true
       });
     }
-
   } catch (error) {
     console.error("Unexpected optimization error:", error);
     return NextResponse.json({
@@ -236,18 +234,18 @@ function generateContentAwareResume(originalContent: string, analysisData: any):
   const lines = originalContent.split('\n').filter(line => line.trim());
   const hasEmail = originalContent.includes('@');
   const hasPhone = /\d{3}[-.]?\d{3}[-.]?\d{4}/.test(originalContent);
-  
+
   // Try to identify if there are sections
-  const hasExperience = originalContent.toLowerCase().includes('experience') || 
-                       originalContent.toLowerCase().includes('work') ||
-                       originalContent.toLowerCase().includes('employment');
+  const hasExperience = originalContent.toLowerCase().includes('experience') ||
+    originalContent.toLowerCase().includes('work') ||
+    originalContent.toLowerCase().includes('employment');
   
   const hasEducation = originalContent.toLowerCase().includes('education') ||
-                      originalContent.toLowerCase().includes('degree') ||
-                      originalContent.toLowerCase().includes('university');
-
+    originalContent.toLowerCase().includes('degree') ||
+    originalContent.toLowerCase().includes('university');
+  
   const hasSkills = originalContent.toLowerCase().includes('skills') ||
-                   originalContent.toLowerCase().includes('technical');
+    originalContent.toLowerCase().includes('technical');
 
   // Build optimized resume based on what we found
   let optimizedResume = ``;

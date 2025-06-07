@@ -1,5 +1,5 @@
 // /app/api/analyze-resume/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Load API key (from server env, NOT public)
@@ -11,11 +11,11 @@ if (apiKey) {
   genAI = new GoogleGenerativeAI(apiKey);
 }
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   return new NextResponse('Page is working');
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     console.log("Analyze resume API called");
 

@@ -28,10 +28,10 @@ interface APIResponse {
   institutions?: CourseraInstitution[];
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const query = searchParams.get("query") || "web development";
-
+  
   const options = {
     method: "GET",
     headers: {
@@ -46,12 +46,12 @@ export async function GET(req: NextRequest) {
 
     const institutionsUrl = "https://collection-for-coursera-courses.p.rapidapi.com/rapidapi/course/get_institution.php";
     const institutionsResponse = await fetch(institutionsUrl, options);
-
+    
     if (institutionsResponse.ok) {
       const text = await institutionsResponse.text();
       const data = JSON.parse(text);
       const mockCourses = createCoursesFromInstitutions(data, query);
-
+      
       return NextResponse.json({
         courses: mockCourses,
         total: mockCourses.length,
@@ -70,6 +70,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error("Final API Error:", err);
     const mockCourses = generateMockCourses(query);
+    
     return NextResponse.json({
       error: "API down. Showing mock data.",
       courses: mockCourses,
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function fetchAllCourses(query: string, options: RequestInit) {
+async function fetchAllCourses(query: string, options: RequestInit): Promise<any | null> {
   const endpoints = [
     {
       name: "Get Courses by Search",
@@ -106,13 +107,13 @@ async function fetchAllCourses(query: string, options: RequestInit) {
       const res = await fetch(endpoint.url, options);
       const time = Date.now() - start;
       console.log(`${endpoint.name} took ${time}ms`);
-
+      
       if (!res.ok) throw new Error("Bad response");
-
+      
       const text = await res.text();
       const data = JSON.parse(text);
       const courses = parseCoursesFromResponse(data, query);
-
+      
       if (courses.length > 0) {
         return {
           courses,
@@ -133,7 +134,7 @@ async function fetchAllCourses(query: string, options: RequestInit) {
 
 function parseCoursesFromResponse(data: APIResponse, query: string): any[] {
   let coursesArray: any[] = [];
-
+  
   if (data.elements && Array.isArray(data.elements)) {
     coursesArray = data.elements;
   } else if (data.courses && Array.isArray(data.courses)) {
@@ -156,7 +157,7 @@ function parseCoursesFromResponse(data: APIResponse, query: string): any[] {
 
 function createCoursesFromInstitutions(institutionsData: any, query: string): any[] {
   let institutions: any[] = [];
-
+  
   if (Array.isArray(institutionsData)) {
     institutions = institutionsData;
   } else if (institutionsData.elements) {
@@ -174,7 +175,7 @@ function createCoursesFromInstitutions(institutionsData: any, query: string): an
   ];
 
   const courses: any[] = [];
-
+  
   institutions.slice(0, 10).forEach((institution: any, instIndex: number) => {
     courseTopics.forEach((topic, topicIndex) => {
       courses.push({
@@ -195,9 +196,9 @@ function createCoursesFromInstitutions(institutionsData: any, query: string): an
 
 function generateMockCourses(query: string): any[] {
   const topic = query.toLowerCase().includes("python") ? "Python" :
-                query.toLowerCase().includes("react") ? "React" :
-                query.toLowerCase().includes("javascript") ? "JavaScript" :
-                query.toLowerCase().includes("data") ? "Data Science" : "Web Development";
+    query.toLowerCase().includes("react") ? "React" :
+    query.toLowerCase().includes("javascript") ? "JavaScript" :
+    query.toLowerCase().includes("data") ? "Data Science" : "Web Development";
 
   return Array.from({ length: 4 }).map((_, index) => ({
     id: `mock-${index}-${Date.now()}`,
