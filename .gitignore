@@ -9,6 +9,7 @@
 # next.js
 /.next/
 /out/
+.next
 
 # production
 /build
@@ -64,3 +65,4 @@ venv/
 *.swp
 *.swo
 /src/generated/prisma
+.next
