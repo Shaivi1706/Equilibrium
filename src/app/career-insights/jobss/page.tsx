@@ -157,7 +157,6 @@ export default function SkillQuiz() {
                       }
                     `}
                   >
-                    <span className="text-lg">{level.icon}</span>
                     <span>{level.name}</span>
                   </button>
                 ))}
