@@ -1,0 +1,40 @@
+.
+├── README.md
+├── backend
+│   ├── model.pkl
+│   ├── predict.py
+│   └── train_model.py
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── prisma
+│   └── schema.prisma
+├── project-structure.txt
+├── scripts
+│   └── test.ts
+├── skill_prediction_model.pkl
+├── src
+│   ├── app
+│   │   ├── api
+│   │   ├── career-insights
+│   │   ├── contact
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── Footer.tsx
+│   │   ├── HeroSection.tsx
+│   │   ├── Navbar.tsx
+│   │   ├── featuredCourses
+│   │   └── ui
+│   ├── generated
+│   │   └── prisma
+│   └── utils
+│       └── cn.ts
+├── tailwind.config.ts
+└── tsconfig.json
+
+15 directories, 23 files
