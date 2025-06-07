@@ -1,5 +1,6 @@
 # Equilibrium — Your Personalized Career Growth Companion
 Live Demo : (https://equilibrium-64uw.vercel.app)
+Model Deployment Link : (https://job-role-model.onrender.com/predict)
 
 Equilibrium is an intelligent career assistant designed to help individuals find balance in their professional journey by providing **AI-powered job recommendations**, **resume feedback**, and **smart course suggestions**, all in one clean, centralized platform.
 
@@ -34,6 +35,6 @@ We often feel lost between where we are and where we want to be in our careers. 
 ## Tech Stack
 - Next.js
 - PostgreSQL
-- ML model for job recommendation (yet not hosted on render)
+- ML model for job recommendation
 - Coursera Rapid API for course recommedation
 - Gemini API for resume feedback

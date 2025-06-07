@@ -27,13 +27,13 @@ function Navbar({ className }: { className?: string }) {
             <ProductItem
               title="Job Recommendations"
               href="/career-insights/jobss"
-              src="/courses/jr.jpeg"
+              src="/pictures/courses.jpeg"
               description="AI-powered job role suggestions tailored to your skills and career goals."
             />
             <ProductItem
               title="Course Recommendations"
               href="/career-insights/courses"
-              src="/courses/cr.jpeg"
+              src="/pictures/jobs.png"
               description="Find the best courses to upskill and advance your career with ease."
             />
             </div>
@@ -41,7 +41,7 @@ function Navbar({ className }: { className?: string }) {
             <ProductItem
               title="Resume Enhancement"
               href="/career-insights/resume"
-              src="/courses/ra.jpeg"
+              src="/pictures/resume.jpeg"
               description="Upload your resume and get AI-driven suggestions to optimize your ATS score."
             />
             </div>
