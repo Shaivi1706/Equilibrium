@@ -18,11 +18,21 @@ We often feel lost between where we are and where we want to be in our careers. 
 ### Job Recommendations (Completed)
 - Intelligent job suggestions based on skills and interests.
 
-### Resume Analysis (In Progress)
-- Upload or paste your resume to receive AI-driven analysis.
+### Resume Analysis (Completed)
+- Upload your resume to receive AI-driven analysis.
 - Detects weak points, skill gaps, and suggests improvements.
 - Provides insights into ATS compatibility.
+- Optimize your resume.
 
 ### Course Recommendations (Completed)
 - Recommends curated courses (Coursera-Rapid api) for the course you ask.
 - It gives you most rated course and it's review to figure out which course you want to pursue.
+
+---
+
+## Tech Stack
+- Next.js
+- PostgreSQL
+- ML model for job recommendation
+- Coursera Rapid API for course recommedation
+- Gemini API for resume feedback
